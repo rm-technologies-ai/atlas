@@ -1,3 +1,5 @@
+# human scratch pad file. exclude from loading.
+
 environment: 
 - I run Windows 11 Pro. Use Claude Code and ChatGPT as AI assistants. I use VS Code, with default to WSL terminal an operation. I use Docker Desktop integrated with WSL.
 - interact heavily with gitlab and have created some utilities already using the rest api.
