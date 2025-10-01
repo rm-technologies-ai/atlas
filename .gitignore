@@ -56,8 +56,9 @@ logs/
 
 # Environment files (may contain secrets)
 .env
-.env.*
+.env.atlas
 .env.local
+.env.*
 .env.*.local
 *.pem
 *.key
@@ -94,6 +95,14 @@ desktop.ini
 *.tar.gz
 *.rar
 *.7z
+*.archive/
+
+# AI session temporary files
+.ai/temp/
+.ai/debug-log.md
+
+# Archon local data (if any)
+archon/data/local/
 
 # Large data files (uncomment if needed)
 # *.csv
