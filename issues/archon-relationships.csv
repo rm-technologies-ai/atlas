@@ -1,0 +1,5 @@
+source_id,source_type,relationship_type,target_id,target_type,metadata_json
+"wiki_71509248_Lion-Software-Development","wiki_page","belongs_to","project_71509248","project","{}"
+"wiki_70542589_Child-entry","wiki_page","belongs_to","project_70542589","project","{}"
+"wiki_70542589_Datasets-Wiki","wiki_page","belongs_to","project_70542589","project","{}"
+"wiki_70542589_home","wiki_page","belongs_to","project_70542589","project","{}"

@@ -499,6 +499,93 @@ This file contains all environment variables and secrets for Atlas projects:
 - In development, reference this file when configuring services
 - For production, use proper secrets management (AWS Secrets Manager, etc.)
 
+## Task Management Strategy
+
+### Archon as Single Source of Truth
+
+**Atlas Project ID:** `3f2b6ee9-05ff-48ae-ad6f-54cad080addc`
+
+Atlas uses a **three-tier task management hierarchy**:
+
+#### 1. Archon MCP (PRIMARY - Persistent Tasks)
+**Use for:** All persistent task tracking, project management, backlog planning
+
+- ✅ Project epics and milestones
+- ✅ User stories and work items
+- ✅ Long-term roadmap and backlog
+- ✅ Cross-session task tracking
+- ✅ Multi-agent task visibility
+- ✅ Knowledge base integration
+- **Access:** Web UI (http://localhost:3737), MCP tools, REST API (http://localhost:8181)
+
+**When to use:**
+- Any task that survives the current session
+- Any task other people or agents need to see
+- Any task that requires reporting or analytics
+- Strategic planning and project organization
+
+#### 2. BMAD Story Files (SECONDARY - Development Workflow)
+**Use for:** Generated documentation during SM → Dev → QA cycles
+
+- ⚠️ Story files in `docs/stories/` (generated FROM Archon when needed)
+- ⚠️ Used by Dev/QA agents during implementation
+- ⚠️ Synced from Archon (Archon is source of truth)
+- **Status:** Optional - can generate from Archon or skip entirely
+
+**When to use:**
+- Dev agent needs detailed story file during implementation
+- QA agent needs to append review results
+- Git-versioned task history is valuable
+
+#### 3. TodoWrite (TACTICAL - Session-Only Breakdown)
+**Use for:** Current conversation tactical planning ONLY
+
+- ⚠️ Temporary session-scoped checklists
+- ⚠️ Multi-step operation breakdown within current session
+- ⚠️ Automatically discarded when session ends
+- ❌ **NEVER** for persistent task tracking
+- ❌ **NEVER** for project backlog or roadmap
+- ❌ **NEVER** for cross-session tasks
+
+**When to use (rare):**
+- Breaking down current work into 5-10 immediate steps
+- Tracking progress of complex refactoring in current session
+- Checklist for debugging multi-step issue right now
+
+**Example appropriate TodoWrite:**
+```
+Current session: Implementing Story 1.1
+- [ ] Read acceptance criteria
+- [ ] Set up test fixtures
+- [ ] Implement validation logic
+- [ ] Write unit tests
+- [ ] Update Archon task status to "done"
+```
+
+### Task Management Decision Tree
+
+```
+Is this task needed after this conversation ends?
+├─ YES → Use Archon (create/update via MCP)
+└─ NO → Use TodoWrite (session checklist)
+
+Does this task involve multiple sessions or agents?
+├─ YES → Use Archon (cross-session visibility)
+└─ NO → Could use TodoWrite (but Archon is safer)
+
+Is this task part of project planning or backlog?
+├─ YES → Use Archon (strategic planning)
+└─ NO → Evaluate if TodoWrite is appropriate
+
+Will someone need to report on this task?
+├─ YES → Use Archon (reporting & analytics)
+└─ NO → Evaluate if TodoWrite is appropriate
+```
+
+**When in doubt: Use Archon.** It's always safe to put tasks in Archon. It's never safe to rely on TodoWrite for persistence.
+
+---
+
 ## Common Commands
 
 ### Archon Operations
@@ -512,9 +599,27 @@ archon:rag_get_available_sources()
 # Search knowledge base
 archon:rag_search_knowledge_base(query="...", match_count=5)
 
-# Manage tasks
+# Query tasks
+archon:find_tasks(project_id="3f2b6ee9-05ff-48ae-ad6f-54cad080addc")
 archon:find_tasks(filter_by="status", filter_value="todo")
-archon:manage_task(action="create", title="...", project_id="...")
+archon:find_tasks(query="authentication")
+
+# Create task
+archon:manage_task(
+    action="create",
+    project_id="3f2b6ee9-05ff-48ae-ad6f-54cad080addc",
+    title="Task title",
+    description="Detailed description",
+    feature="Epic Name",
+    task_order=100
+)
+
+# Update task status
+archon:manage_task(
+    action="update",
+    task_id="[task-id]",
+    status="doing"  # todo|doing|review|done
+)
 ```
 
 ### GitLab Issue Export

@@ -1,4 +1,33 @@
-# human scratch pad file. exclude from loading.
+# NOTES.md
+
+This file is used for human note taking. Not maintained, information may be obsolete or deprecated. Do not load file content into the context window. Only reference if searching for specific information.
+
+# Notes:
+
+I am the technical project manager responsible for the ATLAS Data Science (lion, paxium) project. 
+This Project is a repository (/atlas) that contains nested solutions, knowledge or working spaces for a collection of Assets, Projects, research , and Git Repos created or leveraged during the execution of this project. 
+- I have deployed archon https://github.com/coleam00/Archon and it is accessible to claude code via MCP. 
+- I have installed the BMAD-METHOD https://github.com/bmad-code-org/BMAD-METHOD in the Atlas repo root E:\repos\atlas, and tested agent interaction with access to RAG.
+  - repository note: 
+- My next steps are to define, automate and execute immediate project management and Scrum Master tasks with the assistance of BMAD agents.
+- Before proceeding to use the system, the following items need to be addressed:
+  1. There is task management overlap. 
+  1.1 The atlas repo is a custom integration solution that allows for the consumption of BMAD and other agentic frameworks via claude code. 
+  1.2 The RAG integration via Archon MCP augments the content of the context window providing valuable, correct, project-specific data.
+  1.3 Claude Code, BMAD and archon all provide task management in some form. we need to research the existing specs and implementation for each, determine the best location to place source of truth tasks, and implement capabilities to propagate changes as needed. It appears that archon has a task management interface, so it would be easy for claude code or bmad to update tasks based on archon RAG/task queries.
+  1.4 Inspect task implementations for Archon (archon/), bmad (BMAD-METHOD/), and claude code documentation https://docs.claude.com/en/docs/claude-code.
+  1.5 Provide an alternative analysis and an execution plan to implement the recommended approach. Save all results to .ai/conversations folder
+  2. Provide a minimalist manual solution, i.e. use archon UI, query archon via MCP.
+
+
+
+
+
+
+** lion wiki MDs must include link references to auto-generate references among wiki pages being automatically created or edited.
+
+clone gitlab utils
+tell cc about both libraries.
 
 
 environment: 
@@ -75,3 +104,7 @@ ideas:
 - This Project is a repository that contains solutions, knowledge or working spaces for a collection of Assets, Projects, research , and Git Repos created or leveraged during the execution of this project.
   - iterative, ad-hoc, hirearchical taxonomy to be used, use only required, minimal scaffolding.
   - Open source tools will be cloned into this repo and built from here. multiple projects will reside here and consume shared resources.
+
+
+
+
