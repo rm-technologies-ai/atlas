@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+
+
 ## Project Overview
 
 **Atlas** (root: `/mnt/e/repos/atlas/` or `E:\repos\atlas\` on Windows) is an aggregation repository for the ATLAS Data Science (Lion/Paxium) project - a brownfield commercial data science platform at 30% completion. This repository serves as a workspace for solutions, research, tools, and cloned open-source projects used during project execution.
@@ -12,7 +14,7 @@ The project builds on 10 years of NGA experience in data/image governance, searc
 
 ### Project Structure
 
-- `/issues/` - GitLab issue export tool (scripts and exported CSV/XLSX data)
+- `/issues/` - GitLab issue export tool (see `issues/CLAUDE.md` for details)
 - Root directory will contain multiple project folders
 - Each project folder is self-contained with its own tools, data, and potentially its own VCS
 - Projects may be cloned from GitHub, GitLab, or custom content
@@ -22,19 +24,12 @@ The project builds on 10 years of NGA experience in data/image governance, searc
 
 **GitLab Integration:**
 - Primary issue tracking via GitLab at `atlas-datascience/lion` group
-- Scripts export issues with full text for LLM/RAG processing
+- Issue export tool in `/issues/` directory (see `issues/CLAUDE.md`)
 - Issue hierarchy traces from individual tasks to product delivery
-
-**Issues Folder (`/issues/`):**
-- Contains scripts and exported data for GitLab issue analysis
-- `gitlab-hive-issues.csv` - Basic issue metadata export
-- `gitlab-issues-with-text.csv` - Full issue export with descriptions and comments
-- `gitlab-issues-with-text.xlsx` - Excel formatted issue data
-- Shell scripts for GitLab API interaction
 
 ## Git Integration
 
-Atlas is connected to GitHub at `https://github.com/repotest182/atlas.git`. See `GIT-WORKFLOW.md` for detailed multi-repository workflow.
+Atlas is connected to GitHub at `https://github.com/rm-technologies-ai/atlas.git`.
 
 **Quick Git Commands:**
 ```bash
@@ -52,27 +47,7 @@ pwd && git remote -v          # Show location and remote
 
 ## Common Commands
 
-### Export GitLab Issues (Basic)
-```bash
-cd issues
-./list-issues-csv.sh
-```
-Exports metadata for all issues in the `atlas-datascience/lion` group to `gitlab-hive-issues.csv`.
-
-### Export GitLab Issues (Full Text)
-```bash
-cd issues
-./list-issues-csv-with-text.sh
-```
-Exports complete issue data including descriptions and comments to `gitlab-issues-with-text.csv`. Set `FETCH_COMMENTS=true` to include all comments (slower).
-
-**Environment Variables for Export Scripts:**
-- `GITLAB_HOST` - GitLab instance URL (default: https://gitlab.com)
-- `GROUP_PATHS` - Comma-separated group paths (default: atlas-datascience/lion)
-- `INCLUDE_SUBGROUPS` - Include subgroups (default: true)
-- `STATE` - Issue state filter: opened|closed|all (default: all)
-- `OUT` - Output filename
-- `FETCH_COMMENTS` - Fetch issue comments (default: false, set to true for full data)
+For GitLab issue export commands, see `issues/CLAUDE.md`
 
 ## Development Context
 
@@ -125,12 +100,27 @@ Execute the first BMAD task: Identify and create missing Scrum product backlog i
 - **Platform:** GitLab CI/CD (pipelines, runners)
 - **Data:** RAG/Graph databases for project documentation and code analysis
 
+## Environment Variables & Secrets
+
+**Location:** `.env.atlas` in the root directory (excluded from git)
+
+This file contains all environment variables and secrets for Atlas projects:
+- GitLab API tokens and configuration
+- GitHub credentials
+- Supabase credentials for Archon
+- OpenAI/Gemini API keys
+- AWS credentials
+
+**Important:**
+- `.env.atlas` is gitignored and never committed
+- Each subfolder project (like `archon/`) has its own `.env` that sources values from `.env.atlas`
+- In development, reference this file when configuring services
+- For production, use proper secrets management (AWS Secrets Manager, etc.)
+
 ## Important Notes
 
 - **Root Directory:** The project root is `E:\repos\atlas\` (Windows) or `/mnt/e/repos/atlas/` (WSL). All paths and operations should be relative to this root.
 - **Repository Model:** This is a meta-repository that aggregates multiple sources. Subfolders may be git repositories themselves (from GitHub or GitLab). Be cautious with git operations at the root level vs. subfolder level.
 - **Tool and Dependency Management:** All code, clones, repos, and tools needed for tasks are cloned and stored within the Atlas root directory. Tools are not installed globally but kept as local clones within this repository.
-- **Security:** GitLab API tokens are currently hardcoded in scripts (see issues/list-issues-*.sh:7). These should be migrated to environment variables or secure credential storage.
-- **Scalability:** Issue export scripts currently paginate up to 10 pages (1000 issues max). Increase page loop limit if needed.
 - **Project Phase:** Brownfield project requiring reverse-engineering of platform engineering components (pipelines, IaC) to logical architecture views.
 - **Hierarchical Analysis:** All work items must be traceable in hierarchical format to product delivery goals.

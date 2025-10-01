@@ -56,6 +56,7 @@ logs/
 
 # Environment files (may contain secrets)
 .env
+.env.*
 .env.local
 .env.*.local
 *.pem
