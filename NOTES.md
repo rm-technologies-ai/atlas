@@ -20,6 +20,16 @@ This Project is a repository (/atlas) that contains nested solutions, knowledge 
   2. Provide a minimalist manual solution, i.e. use archon UI, query archon via MCP.
 
 
+  ----------------
+
+  I have developed two custom utilities issues/ and gitlab-utilities/ to extract information from Gitlab for project lion (atlas). I need to be able Use  archon web scraping Features to scrape all the issues on their Project Lion and its sub groups and projects, And prepare them into chunks for rag storage and access. I want to make sure that all the project epics and user stories are available via MCP to the bmad Agents.
+  Review the existing code and reference as needed, to create a new reusable library in gitlab-sdk/ folder. This library will be consumed by claude code, bmad, agents, and any agentic worflow, to query the entire hive under https://gitlab.com/atlas-datascience/lion an be able to clone hierarchically nested subgroups and projects. 
+  The same wil be done for issues, user stories, epics, and work items in general, but the data needs to be formatted properly for RAG with the entire denormalized content stored for an issue/work item.
+  Prepare a plan to scan Gitlab for all the issues under Lion Prepare them for rag ingestion And saved them into the archon rag. I want to be able to ask specific questions such as "Which user stories are due this Friday."
+  Store the results in the Conversations folder.
+
+
+
 
 
 
