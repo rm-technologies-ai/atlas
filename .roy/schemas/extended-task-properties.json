@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Roy Extended Task Properties",
+  "description": "Extended properties for Archon tasks used by roy framework and GitLab interoperability",
+  "type": "object",
+  "properties": {
+    "roy": {
+      "type": "object",
+      "description": "Roy framework custom properties",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["Draft", "Active", "Blocked", "Deferred"],
+          "description": "Roy-specific state beyond Archon status enum"
+        },
+        "behavior": {
+          "type": "string",
+          "description": "Inferred behavior description - what the task should accomplish"
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "description": "Testable conditions for task completion",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expected_results": {
+          "type": "array",
+          "description": "Observable outcomes when task is complete",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inferred_from": {
+          "type": "string",
+          "description": "Original task description provided by user"
+        },
+        "created_by_command": {
+          "type": "string",
+          "description": "Roy command that created this task (e.g., /roy-task-create)"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when extended properties were created (ET timezone)"
+        },
+        "test_strategy": {
+          "type": "string",
+          "description": "Testing approach for validating task completion"
+        },
+        "dependencies": {
+          "type": "array",
+          "description": "Task IDs this task depends on",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "description": "Roy-specific tags for categorization",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["state", "behavior", "inferred_from", "created_by_command", "created_at"]
+    },
+    "gitlab": {
+      "type": "object",
+      "description": "GitLab issue entity mapping for interoperability",
+      "properties": {
+        "labels": {
+          "type": "array",
+          "description": "GitLab label names",
+          "items": {
+            "type": "string"
+          }
+        },
+        "milestone": {
+          "type": "string",
+          "description": "GitLab milestone title"
+        },
+        "weight": {
+          "type": "integer",
+          "description": "Story points (GitLab weight field)",
+          "minimum": 0
+        },
+        "time_estimate": {
+          "type": "integer",
+          "description": "Estimated time in seconds",
+          "minimum": 0
+        },
+        "due_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Due date (YYYY-MM-DD)"
+        },
+        "epic_iid": {
+          "type": "string",
+          "description": "GitLab epic internal ID"
+        },
+        "health_status": {
+          "type": "string",
+          "enum": ["on_track", "needs_attention", "at_risk"],
+          "description": "GitLab health status"
+        },
+        "issue_type": {
+          "type": "string",
+          "enum": ["issue", "incident", "test_case", "requirement", "task"],
+          "description": "GitLab issue type"
+        },
+        "confidential": {
+          "type": "boolean",
+          "description": "Whether issue is confidential"
+        }
+      }
+    },
+    "tdd": {
+      "type": "object",
+      "description": "Test-Driven Design metadata",
+      "properties": {
+        "test_cases": {
+          "type": "array",
+          "description": "Specific test cases derived from acceptance criteria",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Test case name"
+              },
+              "description": {
+                "type": "string",
+                "description": "Test case description"
+              },
+              "given": {
+                "type": "string",
+                "description": "Given (preconditions)"
+              },
+              "when": {
+                "type": "string",
+                "description": "When (action)"
+              },
+              "then": {
+                "type": "string",
+                "description": "Then (expected result)"
+              }
+            },
+            "required": ["name", "description"]
+          }
+        },
+        "inference_quality": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Quality assessment of TDD inference from description"
+        }
+      }
+    }
+  },
+  "required": ["roy"]
+}

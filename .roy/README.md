@@ -213,6 +213,42 @@ Agents query RAG to enrich prompts with near-real-time project data, producing r
 
 ---
 
+#### `/roy-task-create <description>`
+
+**Purpose:** Create Archon task with intelligent TDD-based inference from free-form description
+
+**Status:** Implemented (SPEC-004)
+
+**Syntax:** `/roy-task-create <description>`
+
+**Parameter:**
+- `<description>` - Free-form textual description of task to create
+
+**What it does:**
+1. Analyzes task description using TDD principles
+2. Infers behavior, acceptance criteria, expected results automatically
+3. Creates task in Archon via MCP with "Draft" state
+4. Stores extended properties (roy + GitLab mappings) in `.roy/tasks/extended/{task_id}.json`
+5. Validates creation by querying Archon
+6. Reports results with task ID and TDD analysis
+
+**When to use:**
+- Creating feature implementation tasks
+- Defining bug fixes with acceptance criteria
+- Planning research tasks
+- Breaking down epics into implementable tasks
+
+**Extended Properties:**
+- **Roy custom**: behavior, acceptance criteria, expected results, test strategy, state (Draft/Active)
+- **GitLab mapping**: labels, milestone, weight, time estimate, due date, epic, health status
+- **TDD metadata**: inference quality, test cases
+
+**Location:** `.claude/commands/roy-task-create.md`
+
+**See also:** SPEC-004-task-creation.md
+
+---
+
 ### Data Flow Commands
 
 #### `/roy-gitlab-refresh`
