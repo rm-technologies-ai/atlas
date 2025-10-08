@@ -325,6 +325,32 @@ Agents query RAG to enrich prompts with near-real-time project data, producing r
 
 ---
 
+#### `/roy-git-commit`
+
+**Purpose:** Automate git add, commit, and push to GitHub with intelligent commit messages
+
+**Status:** Implemented (SPEC-003)
+
+**What it does:**
+1. Checks git status and validates repository/remote
+2. Analyzes changes and conversation context
+3. Generates meaningful commit message with ET timestamp
+4. Stages all changes (`git add .`)
+5. Commits with generated message
+6. Pushes to GitHub remote main branch
+
+**When to use:**
+- After completing roy specifications
+- After creating or modifying commands
+- After documentation updates
+- Quick commit workflow for development iterations
+
+**Location:** `.claude/commands/roy-git-commit.md`
+
+**See also:** SPEC-003-git-automation.md
+
+---
+
 ## 🔄 Context Engineering Requirements
 
 ### Claude Code Restart Policy
