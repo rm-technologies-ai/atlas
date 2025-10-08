@@ -135,29 +135,66 @@ Components will be added incrementally as roy agentic specifications are defined
 
 ---
 
-## 🛠️ Roy Commands (To Be Implemented)
+## 📊 Data Source Hierarchy
 
-### Command 1: `/roy-init`
+### Source of Truth Authority
+
+Roy framework orchestrates data flows between multiple sources of truth:
+
+**Archon Tasks** - Agentic Orchestration
+- Source of truth for roy-orchestrated workflow tasks
+- BMAD agent execution tasks
+- Cross-agent coordination tasks
+- Managed via Archon MCP API
+
+**GitLab Issues** - Project Work Items
+- Source of truth for Atlas project user stories, epics, journeys
+- Product backlog and sprint planning
+- **NOT managed by Archon** - separate concern
+- Synchronized to Archon RAG for read-only querying
+
+**Archon RAG** - Knowledge Query Layer
+- Derived from GitLab (read-only)
+- Enables agents to query project context
+- Refreshed via `/roy-gitlab-refresh`
+- Supports prompt enrichment and grounding
+
+**Complete Documentation:** See `.roy/policies/POLICY-data-sources.md`
+
+### Data Flow Pipeline
+
+```
+GitLab (Source) → atlas-project-data/ → Archon RAG → Agents (Query)
+```
+
+Agents query RAG to enrich prompts with near-real-time project data, producing responses that are correct, complete, and precise.
+
+---
+
+## 🛠️ Roy Commands
+
+### Framework Commands
+
+#### `/roy-init`
 
 **Purpose:** Load roy agentic framework into context
 
-**Behavior (Current State):**
-- Loads this README.md
-- Loads SEED.md
-- Acknowledges empty constructor state
+**Status:** Implemented
+
+**Behavior:**
+- Loads roy README.md and SEED.md
+- Acknowledges current state
 - Returns control to user
 
-**Behavior (Future State):**
-- Loads all roy agents, commands, and logic
-- Initializes roy orchestration layer
-- Subordinates all other frameworks
-- Presents roy capabilities menu
+**Location:** `.claude/commands/roy-init.md`
 
-**Location:** `.claude/commands/roy-init.md` (to be created)
+---
 
-### Command 2: `/roy-agentic-specification`
+#### `/roy-agentic-specification {$SPECIFICATION}`
 
 **Purpose:** Incrementally define roy agentic capabilities
+
+**Status:** Implemented
 
 **Syntax:** `/roy-agentic-specification {$SPECIFICATION}`
 
@@ -165,14 +202,126 @@ Components will be added incrementally as roy agentic specifications are defined
 - `$SPECIFICATION` - Natural language description of addition, correction, update, or optimization
 
 **Workflow:**
-1. **Analyze** - Understand specification in relation to current roy implementation
-2. **Plan** - Formulate implementation plan
-3. **Identify** - Determine all required changes to existing roy definition
-4. **Integrate** - Ensure changes preserve existing functionality and propagate completely
-5. **Test** - Generate automated agentic unit tests
-6. **Verify** - Execute tests and fix issues until verification succeeds
+1. Analyze specification against current roy state
+2. Formulate implementation plan
+3. Get user approval
+4. Implement changes
+5. Generate and execute tests
+6. Finalize and commit
 
-**Location:** `.claude/commands/roy-agentic-specification.md` (to be created)
+**Location:** `.claude/commands/roy-agentic-specification.md`
+
+---
+
+### Data Flow Commands
+
+#### `/roy-gitlab-refresh`
+
+**Purpose:** Synchronize GitLab project data into Archon RAG
+
+**Status:** Implemented (SPEC-002)
+
+**What it does:**
+1. Extracts all GitLab content (issues, wikis, repos, merge requests)
+2. Stores in `atlas-project-data/` folder
+3. Clears previous RAG ingest set
+4. Ingests fresh data into Archon RAG
+5. Reports statistics
+
+**When to use:**
+- Before major planning sessions
+- After significant GitLab updates
+- When agents need fresh project context
+
+**Location:** `.claude/commands/roy-gitlab-refresh.md`
+
+**See also:** SPEC-002-data-flows.md
+
+---
+
+#### `/roy-tasks-clear [--backup]`
+
+**Purpose:** Delete all Archon tasks with optional backup
+
+**Status:** Implemented (SPEC-002)
+
+**Parameters:**
+- `--backup` (optional) - Create timestamped JSON backup before deletion
+
+**What it does:**
+1. Optionally backs up all tasks to `.roy/backups/archon/tasks/archon-tasks-{timestamp-ET}/`
+2. Prompts for user confirmation (requires "confirm")
+3. Deletes all tasks via Archon API
+4. Reports statistics
+
+**When to use:**
+- Before restoring from backup
+- Resetting task state for testing
+- Cleaning up after project phase
+
+**Safety:** Always use `--backup` flag unless certain you don't need tasks
+
+**Location:** `.claude/commands/roy-tasks-clear.md`
+
+**See also:** SPEC-002-data-flows.md
+
+---
+
+#### `/roy-tasks-restore`
+
+**Purpose:** Restore Archon tasks from timestamped backup
+
+**Status:** Implemented (SPEC-002)
+
+**What it does:**
+1. Scans `.roy/backups/archon/tasks/` for backups
+2. Presents enumerated list to user
+3. User selects backup by number
+4. Deserializes and upserts tasks to Archon
+5. Reports statistics
+
+**When to use:**
+- Disaster recovery after accidental deletion
+- Restoring known-good state
+- Migrating tasks between environments
+
+**Location:** `.claude/commands/roy-tasks-restore.md`
+
+**See also:** SPEC-002-data-flows.md
+
+---
+
+#### `/roy-rag-delete <--ingest-set:name | --force>`
+
+**Purpose:** Delete Archon RAG records by ingest set or all records
+
+**Status:** Implemented (SPEC-002)
+
+**Syntax:**
+- `/roy-rag-delete --ingest-set:<name>` - Delete specific ingest set
+- `/roy-rag-delete --force` - Delete ALL RAG records
+
+**Parameters (exactly one required):**
+- `--ingest-set:<name>` - Ingest set to delete (e.g., "atlas-project-data")
+- `--force` - Delete all RAG records (use with caution)
+
+**What it does:**
+1. Validates parameters
+2. Fetches and filters RAG sources
+3. Prompts for user confirmation (requires "confirm")
+4. Deletes matching sources via Archon API
+5. Reports statistics
+
+**When to use:**
+- Before re-ingesting updated GitLab data
+- Cleaning up stale RAG data
+- Resetting knowledge base
+
+**Safety:** No backup created - RAG can be re-ingested from source of truth
+
+**Location:** `.claude/commands/roy-rag-delete.md`
+
+**See also:** SPEC-002-data-flows.md
 
 ---
 
