@@ -370,7 +370,12 @@ Final Status: ✅ ALL TESTS PASSED
    Specification File: .roy/specifications/SPEC-[NNN]-[description].md
    ```
 
-3. **Present to User:**
+3. **Check for Context Engineering Requirements:**
+   - Determine if `.claude/` folder was modified during implementation
+   - If yes: Display restart instructions per POLICY-context-engineering
+   - If no: Proceed with standard finalization
+
+4. **Present to User:**
    ```
    ═══════════════════════════════════════════════════════
 
@@ -391,6 +396,27 @@ Final Status: ✅ ALL TESTS PASSED
 
    ═══════════════════════════════════════════════════════
 
+   [IF .claude/ folder was modified, display:]
+
+   ⚠️  RESTART REQUIRED (POLICY-context-engineering)
+
+   Changes to .claude/ folder detected. Claude Code must be restarted
+   for the updated commands/agents to take effect.
+
+   REQUIRED STEPS:
+   1. Commit changes to version control (see below)
+   2. Exit Claude Code completely
+   3. Restart Claude Code
+   4. Verify commands are registered: Type / to see available commands
+   5. Test updated behavior
+
+   REASON: Claude Code loads .claude/ content at startup only.
+   Without restart, context window contains stale definitions.
+
+   See: .roy/policies/POLICY-context-engineering.md for details
+
+   ═══════════════════════════════════════════════════════
+
    Ready to commit these changes to version control.
 
    Next Steps:
@@ -405,11 +431,12 @@ Final Status: ✅ ALL TESTS PASSED
    ═══════════════════════════════════════════════════════
    ```
 
-4. **Handle Commit (If Requested):**
+5. **Handle Commit (If Requested):**
    - If user types "commit":
      - Stage all changed files in .roy/ and related areas
      - Create commit with prepared message
      - Offer to push (but don't push automatically)
+     - Remind user to restart if .claude/ was modified
    - Otherwise: Return control to user for manual commit
 
 ---

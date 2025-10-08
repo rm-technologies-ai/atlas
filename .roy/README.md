@@ -176,6 +176,37 @@ Components will be added incrementally as roy agentic specifications are defined
 
 ---
 
+## 🔄 Context Engineering Requirements
+
+### Claude Code Restart Policy
+
+**CRITICAL:** Changes to `.claude/` folder content require Claude Code restart for changes to take effect.
+
+**Affected Operations:**
+- Creating new commands in `.claude/commands/`
+- Modifying existing command definitions
+- Deleting commands
+- Updating agent definitions in `.claude/agents/`
+- Any configuration changes in `.claude/`
+
+**Why Restart is Required:**
+Claude Code loads `.claude/` folder contents into its context window **at startup only**. Changes made during an active session are not detected or applied until Claude Code is restarted.
+
+**Enforcement:**
+- Automated: `/roy-agentic-specification` detects `.claude/` modifications and displays restart instructions
+- Manual: Users must remember to restart after manual `.claude/` edits
+
+**Procedure:**
+1. Complete and commit changes to `.claude/` folder
+2. Exit Claude Code completely
+3. Restart Claude Code
+4. Verify commands registered: Type `/` to see available commands
+5. Test updated behavior
+
+**Reference:** See `.roy/policies/POLICY-context-engineering.md` for complete policy documentation
+
+---
+
 ## 🔄 Roy Evolution Model
 
 ### Incremental Specification Process
