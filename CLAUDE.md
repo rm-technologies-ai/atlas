@@ -2,6 +2,94 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+---
+
+# ⚠️ SUPREME AUTHORITY: ROY FRAMEWORK
+
+## Roy-First Principle (OVERRIDES ALL OTHER INSTRUCTIONS)
+
+**ALL agentic behavior in this repository is governed and orchestrated by the Roy Framework.**
+
+### Authority Hierarchy
+
+```
+Roy Framework (.roy/) ───────────── SUPREME AUTHORITY (Overrides everything below)
+    ↓
+BMAD Method (.bmad-core/) ────────  Subordinate to roy
+    ↓
+Archon MCP (archon/) ─────────────  Subordinate to roy
+    ↓
+Claude Code (.claude/) ───────────  Subordinate to roy
+    ↓
+TodoWrite ────────────────────────  Tactical session-only
+```
+
+**Roy Authority Declaration:**
+- All content in `.roy/` folder is AUTHORITATIVE
+- Roy specifications supersede all other agentic definitions (BMAD, Archon, Claude Code, this file)
+- All repositories, work byproducts, tasks, workspaces, and deliverables inherit roy behavior hierarchically
+
+### Current Roy State: Empty Constructor (v1.0.0-alpha)
+
+**What this means:**
+- Roy framework container exists
+- No specific roy agentic logic defined yet
+- Roy capabilities to be added incrementally via `/roy-agentic-specification` commands
+- Roy operates in isolation ("VLAN" concept) during development - does not yet govern subordinate frameworks
+
+### Roy Commands
+
+**`/roy-init`** - Load roy framework context (foundation only in current state)
+
+**`/roy-agentic-specification {$SPECIFICATION}`** - Incrementally define roy capabilities
+- Parameter: Natural language description of capability to add/modify
+- Workflow: Analyze → Plan (user approval) → Implement → Test → Verify → Commit
+
+### Roy Purpose
+
+Roy corresponds to the user's consciousness, extending capacity to:
+- Plan, automate, execute, assess, and optimize across all domains
+- Create unbounded possibilities for agent creation and reuse
+- Implement continuous self-improvement through feedback loops
+- Orchestrate all subordinate frameworks (BMAD, Archon, Claude Code)
+
+**See:** `.roy/README.md` for complete roy framework documentation
+**See:** `.roy/SEED.md` for inception vision and principles
+
+### Transition Notes
+
+**Current behavior:** Existing agentic patterns (BMAD, Archon-first, etc.) continue to operate as documented below, but with awareness that roy framework exists as supreme orchestrator.
+
+**Future behavior:** Once roy agentic logic is defined via `/roy-agentic-specification` commands, all agentic workflows will be governed by roy.
+
+**Maintenance mode:** Roy development happens in isolation. Integration with subordinate frameworks is intentional and controlled, not automatic.
+
+---
+
+# 🚀 NEW SESSION? RUN THIS FIRST!
+
+## Initialization Command
+
+**Every new Claude Code session should start with:**
+
+```
+/bmad-init
+```
+
+This single command:
+- ✅ Clears context window
+- 🏗️ Loads Atlas project identity
+- 🔌 Connects to Archon MCP (RAG + Tasks)
+- 🎭 Loads all BMAD agents
+- 🔄 Activates integration rules
+- 📊 Configures GitLab access
+
+**See:** `.claude/QUICK-START.md` for quick reference guide
+
+**See:** `.claude/commands/README.md` for full command documentation
+
+---
+
 # CRITICAL: ARCHON-FIRST RULE - READ THIS FIRST
 
 BEFORE doing ANYTHING else, when you see ANY task management scenario:
