@@ -61,6 +61,44 @@
           "items": {
             "type": "string"
           }
+        },
+        "directory_name": {
+          "type": "string",
+          "description": "Workspace directory name at atlas root (unique identifier)"
+        },
+        "workspace_path": {
+          "type": "string",
+          "description": "Full absolute path to task workspace directory"
+        },
+        "unit_of_work_log": {
+          "type": "array",
+          "description": "Log of completed workflow units with timestamps",
+          "items": {
+            "type": "object",
+            "properties": {
+              "unit_name": {
+                "type": "string",
+                "description": "Name of completed work unit"
+              },
+              "completed_at": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp when unit completed (ET)"
+              },
+              "description": {
+                "type": "string",
+                "description": "Brief description of work completed"
+              },
+              "artifacts": {
+                "type": "array",
+                "description": "Artifacts produced during this unit",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["unit_name", "completed_at"]
+          }
         }
       },
       "required": ["state", "behavior", "inferred_from", "created_by_command", "created_at"]

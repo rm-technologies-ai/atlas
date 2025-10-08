@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Roy Task Queue Entry",
+  "description": "Queue entry for tasks subscribed in roy framework at .roy/queue/{task_id}.json",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Archon task ID (UUID)"
+    },
+    "directory_name": {
+      "type": "string",
+      "description": "Workspace directory name"
+    },
+    "workspace_path": {
+      "type": "string",
+      "description": "Absolute path to workspace"
+    },
+    "queue_status": {
+      "type": "string",
+      "enum": ["queued", "assigned", "in_progress", "paused", "completed", "failed"],
+      "description": "Current queue status"
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10,
+      "description": "Priority (1=lowest, 10=highest)"
+    },
+    "queued_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when task was queued (ET)"
+    },
+    "assigned_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when task was assigned to agent (ET)"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when work started (ET)"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when task completed (ET)"
+    },
+    "task_metadata": {
+      "type": "object",
+      "description": "Key task information for queue management",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Task title"
+        },
+        "description": {
+          "type": "string",
+          "description": "Task description"
+        },
+        "archon_status": {
+          "type": "string",
+          "enum": ["todo", "doing", "review", "done"],
+          "description": "Current Archon task status"
+        },
+        "roy_state": {
+          "type": "string",
+          "enum": ["Draft", "Active", "Blocked", "Deferred"],
+          "description": "Current roy state"
+        }
+      },
+      "required": ["title", "archon_status"]
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Task IDs this task depends on (must complete first)",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blocked_by": {
+      "type": "array",
+      "description": "Reasons this task is currently blocked",
+      "items": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Blocking reason"
+          },
+          "blocked_since": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When blocking started"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "How to resolve blocker"
+          }
+        }
+      }
+    },
+    "assigned_agents": {
+      "type": "array",
+      "description": "Agents assigned to work on this task",
+      "items": {
+        "type": "object",
+        "properties": {
+          "agent_name": {
+            "type": "string",
+            "description": "Agent identifier"
+          },
+          "assigned_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "role": {
+            "type": "string",
+            "description": "Agent role for this task"
+          }
+        }
+      }
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of times task execution has been retried"
+    },
+    "last_error": {
+      "type": "object",
+      "description": "Last error encountered (if any)",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "error_type": {
+          "type": "string"
+        },
+        "error_message": {
+          "type": "string"
+        },
+        "stack_trace": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": ["task_id", "directory_name", "workspace_path", "queue_status", "priority", "queued_at", "task_metadata"]
+}

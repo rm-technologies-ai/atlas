@@ -1,0 +1,223 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Roy Task Workspace Metadata",
+  "description": "Metadata file stored in each task workspace directory at {workspace}/.roy-metadata.json",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "description": "Archon task ID (UUID)"
+    },
+    "directory_name": {
+      "type": "string",
+      "description": "Workspace directory name"
+    },
+    "workspace_path": {
+      "type": "string",
+      "description": "Absolute path to this workspace directory"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when workspace was created (ET)"
+    },
+    "task_title": {
+      "type": "string",
+      "description": "Task title from Archon"
+    },
+    "task_description": {
+      "type": "string",
+      "description": "Task description from Archon"
+    },
+    "workflow_state": {
+      "type": "object",
+      "description": "Current workflow execution state",
+      "properties": {
+        "current_stage": {
+          "type": "string",
+          "enum": ["initialization", "research", "design", "implementation", "testing", "documentation", "review", "completed"],
+          "description": "Current workflow stage"
+        },
+        "stage_progress": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Progress percentage within current stage"
+        },
+        "last_updated": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last workflow state update (ET)"
+        },
+        "assigned_agents": {
+          "type": "array",
+          "description": "Agents currently assigned to this task",
+          "items": {
+            "type": "string"
+          }
+        },
+        "pending_actions": {
+          "type": "array",
+          "description": "Actions required to progress workflow",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "description": "Action description"
+              },
+              "assigned_to": {
+                "type": "string",
+                "description": "Agent or user responsible"
+              },
+              "priority": {
+                "type": "string",
+                "enum": ["low", "medium", "high", "critical"],
+                "description": "Action priority"
+              }
+            }
+          }
+        }
+      },
+      "required": ["current_stage", "last_updated"]
+    },
+    "unit_of_work_log": {
+      "type": "array",
+      "description": "Log of completed work units",
+      "items": {
+        "type": "object",
+        "properties": {
+          "unit_name": {
+            "type": "string",
+            "description": "Name of work unit"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When unit started (ET)"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When unit completed (ET)"
+          },
+          "description": {
+            "type": "string",
+            "description": "Work unit description"
+          },
+          "performed_by": {
+            "type": "string",
+            "description": "Agent or user who performed work"
+          },
+          "artifacts_created": {
+            "type": "array",
+            "description": "Relative paths to artifacts created",
+            "items": {
+              "type": "string"
+            }
+          },
+          "archon_updated": {
+            "type": "boolean",
+            "description": "Whether Archon task was updated after this unit"
+          }
+        },
+        "required": ["unit_name", "completed_at"]
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "description": "Catalog of artifacts in workspace",
+      "properties": {
+        "documents": {
+          "type": "array",
+          "description": "Documentation files",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "description": "Relative path from workspace root"
+              },
+              "type": {
+                "type": "string",
+                "description": "Document type (markdown, pdf, etc)"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "code": {
+          "type": "array",
+          "description": "Code files",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "language": {
+                "type": "string"
+              },
+              "purpose": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "data": {
+          "type": "array",
+          "description": "Data files",
+          "items": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "format": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "checkpoints": {
+      "type": "array",
+      "description": "State checkpoint history for resumption",
+      "items": {
+        "type": "object",
+        "properties": {
+          "checkpoint_id": {
+            "type": "string",
+            "description": "Unique checkpoint identifier"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "workflow_stage": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "state_file": {
+            "type": "string",
+            "description": "Relative path to state snapshot file"
+          }
+        },
+        "required": ["checkpoint_id", "created_at", "state_file"]
+      }
+    }
+  },
+  "required": ["task_id", "directory_name", "workspace_path", "created_at", "workflow_state"]
+}
